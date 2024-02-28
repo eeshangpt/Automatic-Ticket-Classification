@@ -45,3 +45,51 @@
 # ## Reading the data
 #
 # ### Installations and Imports
+
+# %%
+import json
+import os
+import pickle
+
+# %%
+import pandas as pd
+
+# %%
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', 10)
+
+# %%
+PRJ_DIR = os.getcwd()
+DATA_DIR = os.path.join(PRJ_DIR, 'data')
+
+# %%
+file_name = 'complaints-2021-05-14_08_16.json'
+pkl_file_name = file_name + ".pkl"
+
+# %%
+try:
+    assert os.path.isfile(os.path.join(DATA_DIR, pkl_file_name))
+    print("Pickle found. Now loading...")
+    with open(os.path.join(DATA_DIR, pkl_file_name), 'rb') as f:
+        data = pickle.load(f)
+except AssertionError as e:
+    print("Serialized file not found. Now reading the raw file....")
+    with open(os.path.join(DATA_DIR, file_name)) as f:
+        data = json.load(f)
+    print("Raw file is read. Now pickling.....")
+    with open(os.path.join(DATA_DIR, pkl_file_name), 'wb') as f:
+        pickle.dump(data, f)
+
+# %%
+df = pd.json_normalize(data)
+
+# %%
+df.sample(10)
+
+# %%
+df.columns 
+
+# %%
+df['_source.complaint_what_happened'].
+
+# %%
